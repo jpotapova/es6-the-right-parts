@@ -1,28 +1,26 @@
-(function IIFE() {
-  function foo(x) {
+(() => {
+  var foo = x => {
     var y = x * 2;
 
     return function bar(z) {
       if (z.length > 3) {
-        return z.map(function baz(v) {
+        var baz = v => {
           if (v > 3) return v + y;
           else return baz(v * 4);
-        });
+        };
+        return z.map(baz);
       } else {
         var obj = [];
 
-        setTimeout(
-          function bam() {
-            obj.length = 1;
-            obj[0] = this.w;
-          }.bind(this),
-          100
-        );
+        setTimeout(() => {
+          obj.length = 1;
+          obj[0] = this.w;
+        }, 100);
 
         return obj;
       }
     };
-  }
+  };
 
   var p = foo(2);
   var list1 = [1, 3, 4];
@@ -31,12 +29,7 @@
   list1 = p.call({ w: 42 }, list1);
   list2 = p(list2);
 
-  setTimeout(function() {
-    console.log(
-      list1[0] ===
-        list2.reduce(function(s, v) {
-          return s + v;
-        }, 0)
-    );
+  setTimeout(() => {
+    console.log(list1[0] === list2.reduce((s, v) => s + v, 0));
   }, 200);
 })();
